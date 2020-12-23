@@ -34,11 +34,17 @@ a3 = [1 -2*r*cos(2*pi*fn3/fs) r^2];    % filter coefficients
 b3 = b/sum(b)*sum(a3); 
 %[H3, om] = freqz(b, a);
 %y2 = filter(b, a, y2);
+
+%use convolution to combine all the filter coefficients
 A = conv(a1,a2);
 A = conv(A,a3);
 B = conv(b1,b2);
 B = conv(B,b3);
+
+% filter function to filter the output
 y2 = filter(B, A, summ);
+
+% freqz function to plot the frequency response
 [h,m] = freqz(B, A);
 plot((m)/2*pi*fs,abs(h))
 norm_filt = (y2 - min(y2)) / ( max(y2) - min(y2) )
